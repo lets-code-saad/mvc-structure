@@ -48,12 +48,12 @@ const signinUser = async (req, res) => {
     // if user doesn't exists
     const userExists = await signup.findOne({ email })
     if (!userExists) {
-        return res.status(403).json({ message: "Email or password is wrong" })
+        return res.status(401).json({ message: "Email or password is wrong" })
     }
     // if password is wrong
     const passwordMatch = await bcrypt.compare(password, userExists.password)
     if (!passwordMatch) {
-        return res.status(403).json({ message: "Email or password is wrong" })
+        return res.status(401).json({ message: "Email or password is wrong" })
     }
     // generating token
     const token = jwt.sign({ userId: userExists._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
